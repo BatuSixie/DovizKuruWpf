@@ -1,0 +1,143 @@
+﻿<Window x:Class="DovizKuruWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DovizKuruWpf"
+        mc:Ignorable="d"
+        Title="Döviz Kuru Uygulaması" Height="300" Width="450"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" AllowsTransparency="True" BorderThickness="0"
+        UseLayoutRounding="True" SnapsToDevicePixels="True">
+    <!-- Pencere özellikleri: Başlık çubuğu yok, şeffaf, ortada açılır, kenarlık sıfır, render optimizasyonu -->
+
+    <!-- Pencerenin tamamını kaplayan Border, gradient arka plan ve yuvarlak kenar -->
+    <Border CornerRadius="10">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#3498DB" Offset="0"/>
+                <!-- Mavi başlangıç -->
+                <GradientStop Color="#2ECC71" Offset="1"/>
+                <!-- Yeşil bitiş -->
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <!-- Başlık çubuğu: Sürükleme, başlık yazısı ve kontrol butonları -->
+            <Grid Height="30" VerticalAlignment="Top" Name="titleBar" 
+                  MouseLeftButtonDown="titleBar_MouseLeftButtonDown" Background="#2C3E50" Margin="0,-1,0,0">
+                <!-- Koyu mavi arka plan, üst kenara tam oturması için negatif margin -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <!-- Başlık için esnek alan -->
+                    <ColumnDefinition Width="90"/>
+                    <!-- Butonlar için sabit alan -->
+                </Grid.ColumnDefinitions>
+                <!-- Başlık yazısı -->
+                <TextBlock Text="Döviz Kuru Uygulaması" Foreground="White" 
+                           FontFamily="Segoe UI" FontSize="14" VerticalAlignment="Center" Margin="10,0"/>
+                <!-- Kontrol butonları -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <!-- Küçült butonu -->
+                    <Button Content="−" Width="30" Height="30" Margin="0,0,2,0" 
+                            Click="MinimizeButton_Click" Background="Transparent" Foreground="White">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="#7F8C8D"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <!-- Kapat butonu -->
+                    <Button Content="X" Width="30" Height="30" Click="CloseButton_Click" 
+                            Background="Transparent" Foreground="White">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Border" Property="Background" Value="#E74C3C"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <!-- İçerik alanı: Döviz kurları ve güncelleme butonu -->
+            <Grid Margin="20,40,20,20" Background="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!-- USD kuru gösterimi -->
+                <Border Grid.Row="0" Background="White" CornerRadius="10" Padding="15" Margin="10">
+                    <Label x:Name="lblUsd" Content="USD: ... TL" FontSize="18" FontFamily="Segoe UI" 
+                           Foreground="#2C3E50" HorizontalAlignment="Center"/>
+                </Border>
+                <!-- TRY kuru gösterimi -->
+                <Border Grid.Row="1" Background="White" CornerRadius="10" Padding="15" Margin="10">
+                    <Label x:Name="lblTry" Content="TRY: ... USD" FontSize="18" FontFamily="Segoe UI" 
+                           Foreground="#2C3E50" HorizontalAlignment="Center"/>
+                </Border>
+                <!-- Kurları güncelleme butonu -->
+                <Button x:Name="btnGuncelle" Grid.Row="2" Width="180" Height="45" Margin="10" Click="BtnGuncelle_Click">
+                    <Button.Content>
+                        <TextBlock x:Name="btnText" Text="Kurları Güncelle 🔄"/>
+                    </Button.Content>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#3498DB"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="FontFamily" Value="Segoe UI"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="Border" CornerRadius="22.5" Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="#2980B9"/>
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="#1F618D"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
