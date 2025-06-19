@@ -13,7 +13,7 @@ Bu, C# ve WPF kullanılarak geliştirilmiş bir döviz kuru uygulamasıdır. Tü
 ![Ekran Görüntüsü](screenshots/ekran-goruntusu.png)
 
 ## Kurulum
-1. Depoyu klonlayın: `git clone https://github.com/BatuSixie/DovizKuruWpf.git`
+1. Projeyi yükleyin: `git clone https://github.com/BatuSixie/DovizKuruWpf.git`
 2. Visual Studio 2022'de projeyi açın.
 4. Projeyi çalıştırın (`F5`).
 
